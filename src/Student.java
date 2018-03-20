@@ -15,7 +15,7 @@ public class Student implements Person {
      */
     protected static int nextID = 0;
 
-    private int id;
+    private int id = nextID;
     private String name;
     private int age;
     private String gender;
@@ -30,45 +30,52 @@ public class Student implements Person {
      */
     public Student(String name, int age, String gender) {
         //TODO: Initialize field variables for this Student object
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        nextID++;
     }
 
     @Override
     public int getID() {
         //TODO: Return the Student's ID number
-        return 0;
+        return id;
     }
 
     @Override
     public void setName(String name){
         //TODO: Set the Student's name to name
+        this.name = name;
     }
 
     @Override
     public void setGender(String gender){
         //TODO: Set the Student's gender to gender
+        this.gender = gender;
     }
 
     @Override
     public void setAge(int age){
         //TODO: Set the Student's age to age
+        this.age = age;
     }
 
     @Override
     public String getName(){
         //TODO: Return the Student's name
-        return null;
+        return name;
     }
 
     @Override
     public String getGender(){
         //TODO: Return the Student's gender
-        return null;
+        return gender;
     }
 
     @Override
     public int getAge(){
         //TODO: Return the Student's age
-        return 0;
+        return age;
     }
 
     /**

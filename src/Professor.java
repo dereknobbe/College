@@ -26,7 +26,9 @@ public class Professor extends Teacher {
      */
     public Professor(String name, int age, String gender) {
         //TODO: Call the corresponding superclass's constructor with the same parameters
-   }
+        super(name, age, gender);
+        setBaseSalary(50000);
+    }
 
     /**
      * Constructs a new Professor with the corresponding parameters as field values, an array for storing courses, and
@@ -40,7 +42,8 @@ public class Professor extends Teacher {
      */
     public Professor(String name, int age, String gender, int baseSalary, int perCourseSalary) {
         //TODO: Call the corresponding superclass's constructor with the same parameters
-   }
+        super(name,age,gender,baseSalary,perCourseSalary);
+    }
 
     /**
      * This method must exist, but will not be tested. Use for your personal testing

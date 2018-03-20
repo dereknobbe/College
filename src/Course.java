@@ -30,6 +30,10 @@ public class Course {
      */
     public Course(String name, Professor professor) {
         //TODO: Initialize field variables for this Course object
+        this.name = name;
+        this.professor = professor;
+        teachers = new Teacher[5];
+        students = new Student[MAX_STUDENTS];
     }
 
     /**
@@ -57,11 +61,11 @@ public class Course {
         }
 
         Student[] tempRost = new Student[students.length + 1];
-        for (int i = 0; i < students.length - 1; i++) {
+        for (int i = 0; i < students.length; i++) {
             tempRost[i] = students[i];
         }
         tempRost[tempRost.length - 1] = student;
-
+        students = tempRost;
     }
 
     /**
@@ -71,8 +75,21 @@ public class Course {
      * @param student Student to be removed from the course
      * @throws DropFromCourseException If student is null or if the student is not enrolled in the course.
      */
-    public void dropStudent(Student student)throws DropFromCourseException{
+    public void dropStudent(Student student) throws DropFromCourseException{
         //TODO: Remove student from Course, if possible
+        if (student == null) {
+            throw new DropFromCourseException("Cannot drop student of name 'null'");
+        }
+        for (int i = 0; i < students.length; i++) {
+            int checkStudent = 0;
+            if (students[i].getName() == student.getName()) {
+                checkStudent++;
+            }
+            if (checkStudent == 0) {
+                throw new DropFromCourseException("Student is not enrolled in the course");
+            }
+        }
+
     }
 
     /**
@@ -85,6 +102,39 @@ public class Course {
      */
     public void addTeacher(Teacher teacher) throws AddToCourseException {
         //TODO: Add teacher to Course, if possible, and add Course to teacher's array of Courses.
+        if (teacher == null) {
+            throw new AddToCourseException("Teacher cannot be null.");
+        }
+        boolean full = true;
+        for (int i = 0; i < teachers.length; i++) {
+            if (teachers[i] == null) {
+                full = false;
+            }
+        }
+        if (full) {
+            Teacher[] tempArray = new Teacher[teachers.length * 2];
+            for (int i = 0; i < teachers.length; i++) {
+                tempArray[i] = teachers[i];
+            }
+            tempArray[teachers.length] = teacher;
+            teachers = tempArray;
+            return;
+        }
+        else {
+            Teacher[] tempArray = new Teacher[teachers.length];
+            for (int i = 0; i < teachers.length; i++) {
+                tempArray[i] = teachers[i];
+            }
+            int insertIndex = 0;
+            for (int i = 0; i < tempArray.length; i++) {
+                if (tempArray[i] == null) {
+                    insertIndex = i;
+                    break;
+                }
+            }
+            tempArray[insertIndex] = teacher;
+            teachers = tempArray;
+        }
     }
 
     /**
@@ -96,15 +146,36 @@ public class Course {
      */
     public void dropTeacher(Teacher teacher)throws DropFromCourseException{
         //TODO: Remove teacher from Course, if possible, and remove Course from teacher's array of Courses.
+        if (teacher == null) {
+            throw new DropFromCourseException("Cannot drop null teacher");
+        }
+        boolean isFound = false;
+        for (int i = 0; i < teachers.length; i++) {
+            if (teachers[i] == teacher) {
+                isFound = true;
+            }
+        }
+        if (isFound == false) {
+            throw new DropFromCourseException("Teacher is not contained in this array.");
+        }
+        Teacher[] tempArray = new Teacher[teachers.length];
+        for (int i = 0; i < teachers.length; i++) {
+            tempArray[i] = teachers[i];
+        }
+        for (int i = 0; i < teachers.length; i++) {
+            if (tempArray[i] == teacher) {
+                tempArray[i] = null;
+                break;
+            }
+        }
     }
 
     /**
      * @return Reference to Professor leading this Course
      */
-    public Professor getProfessor()
-    {
-        //TODO: Return a reference to the Professor for this course.
-        return null;
+    public Professor getProfessor() {
+        Professor thisProf = professor;
+        return thisProf;
     }
 
     /**
@@ -141,8 +212,11 @@ public class Course {
      * @return A new array containing the Course's Teachers with no null elements.
      */
     public Teacher[] getTeachers() {
-        //TODO: Create and return a new array containing references to each Teacher in this course's Teacher array, including duplicates
-        return null;
+        Teacher[] tempArray = new Teacher[teachers.length];
+        for (int i = 0; i < teachers.length; i++) {
+            tempArray[i] = teachers[i];
+        }
+        return tempArray;
     }
 
     /**
@@ -152,6 +226,8 @@ public class Course {
      */
     public void changeProfessor(Professor professor) {
         //TODO: Change the Professor for this Course and add/remove the course from the respective Professor's arrays of courses
+        this.professor.dropCourse(this);
+        this.professor = professor;
     }
 
     /**

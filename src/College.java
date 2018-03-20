@@ -3,7 +3,7 @@
  *
  * Represents an abstraction of a college. Each college may have courses, professors, students, and teachers.
  *
- * @author You
+ * @author Derek Nobbe
  *
  * @version date of completion
  *
@@ -48,6 +48,8 @@ public class College {
      */
     public College(String name, int tuition) {
         //TODO: Initialize field variables for this College object
+        this.name = name;
+        this.tuition = tuition;
     }
 
     /**
@@ -58,6 +60,24 @@ public class College {
      */
     public void addCourse(Course course) {
         //TODO: Add the course to the courses array, if appropriate
+        int lastCourseIndex = 0;
+        if (course == null) {
+            return;
+        }
+        for (int i = 0; i < courses.length; i++) {
+            if (course == courses[i]) {
+                return;
+            }
+        }
+        if (courses[9] != null) {
+            return;
+        }
+        for (int i = 0; i < courses.length; i++) {
+            if (courses[i] == null) {
+                lastCourseIndex = i;
+            }
+        }
+        courses[lastCourseIndex] = course;
     }
 
     /**
@@ -68,6 +88,22 @@ public class College {
      */
     public void hireProfessor(Professor professor) {
         //TODO: Add the given professor to the professors array, if appropriate
+        if (professor == null) {
+            return;
+        }
+        for (int i = 0; i < professors.length; i++) {
+            if (professor.getID() == professors[i].getID()) {
+                return;
+            }
+        }
+        int lastProfIndex = 0;
+        for (int i = 0; i < professors.length; i++) {
+            if (professors[i] == null) {
+                lastProfIndex = i;
+                break;
+            }
+        }
+        professors[lastProfIndex] = professor;
     }
 
     /**
@@ -78,6 +114,22 @@ public class College {
      */
     public void hireTeacher(Teacher teacher) {
         //TODO: Add the given teacher to the teachers array, if appropriate
+        if (teacher == null) {
+            return;
+        }
+        for (int i = 0; i < teachers.length; i++) {
+            if (teacher.getID() == teachers[i].getID()) {
+                return;
+            }
+        }
+        int lastTeacherIndex = 0;
+        for (int i = 0; i < teachers.length; i++) {
+            if (students[i] == null) {
+                lastTeacherIndex = i;
+                break;
+            }
+        }
+        teachers[lastTeacherIndex] = teacher;
     }
 
     /**
@@ -88,6 +140,22 @@ public class College {
      */
     public void addStudent(Student student) {
         //TODO: Add the student to the students array, if appropriate
+        if (student == null) {
+            return;
+        }
+        for (int i = 0; i < students.length; i++) {
+            if (student.getID() == students[i].getID()) {
+                return;
+            }
+        }
+        int lastStudentIndex = 0;
+        for (int i = 0; i < students.length; i++) {
+            if (students[i] == null) {
+                lastStudentIndex = i;
+                break;
+            }
+        }
+        students[lastStudentIndex] = student;
     }
 
     /**
@@ -110,6 +178,26 @@ public class College {
      */
     public int calculateNetBudgetChange() {
         //TODO: Calculate the change in budget (Total tuition - Professor Salaries - Teacher Salaries)
+        int numStudents = 0;
+        for (int i = 0; i < students.length; i++) {
+            if (students[i] != null) {
+                numStudents++;
+            }
+        }
+        int profBaseSum = 0;
+        int teacherBaseSum = 0;
+        for (int i = 0; i < professors.length; i++) {
+            if (professors[i] == null) {
+                break;
+            }
+            profBaseSum = profBaseSum + professors[i].getBaseSalary();
+        }
+        for (int i = 0; i < teachers.length; i++) {
+            if (teachers[i] == null) {
+                break;
+            }
+            teacherBaseSum = teacherBaseSum + teachers[i].getBaseSalary();
+        }
         return 0;
     }
 
@@ -119,7 +207,7 @@ public class College {
     public Course[] getCourses()
     {
         //TODO: Return the array of Courses.
-        return null;
+        return courses;
     }
 
     /**
@@ -128,7 +216,7 @@ public class College {
     public Teacher[] getTeachers()
     {
         //TODO: Return the array of Teachers
-        return null;
+        return teachers;
     }
 
     /**
@@ -137,7 +225,7 @@ public class College {
     public Professor[] getProfessors()
     {
         //TODO: Return the array of Professors
-        return null;
+        return professors;
     }
 
     /**
@@ -146,7 +234,7 @@ public class College {
     public Student[] getStudents()
     {
         //TODO: Return the array of Professors
-        return null;
+        return students;
     }
 
     /**
@@ -154,7 +242,7 @@ public class College {
      */
     public String getName() {
         //TODO: Return the name of the College object
-        return null;
+        return name;
     }
 
     /**
@@ -162,6 +250,6 @@ public class College {
      */
     public int getTuition() {
         //TODO: Return the tuition of the College object
-        return 0; // I wish
+        return tuition; // I wish
     }
 }

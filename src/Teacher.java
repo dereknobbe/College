@@ -18,7 +18,7 @@ public class Teacher implements Person {
     private String name;
     private int age;
     private String gender;
-    private int id;
+    private int id = nextID;
     private Course courses[];
     private int perCourseSalary;
     private int baseSalary;
@@ -34,6 +34,13 @@ public class Teacher implements Person {
      */
     public Teacher(String name, int age, String gender) {
         //TODO: Initialize field variables for this Teacher object
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        nextID++;
+        courses = new Course[10];
+        baseSalary = 30000;
+        perCourseSalary = 15000;
     }
 
     /**
@@ -48,6 +55,15 @@ public class Teacher implements Person {
      */
     public Teacher(String name, int age, String gender, int baseSalary, int perCourseSalary) {
         //TODO: Initialize field variables for this Teacher object
+        this.name = name;
+        this.age = age;
+        this.gender = gender;
+        this.baseSalary = baseSalary;
+        this.perCourseSalary = perCourseSalary;
+        nextID++;
+        courses = new Course[10];
+        baseSalary = 30000;
+        perCourseSalary = 15000;
     }
 
     public boolean equals(Teacher teacher) {
@@ -68,8 +84,40 @@ public class Teacher implements Person {
      *
      * @param course
      */
-    public void addCourse(Course course){
+    public void addCourse(Course course) {
         //TODO: Add course to the Teacher's array of courses, if possible
+        boolean full = true;
+        if (course == null) {
+            return;
+        }
+        for (int i = 0; i < courses.length; i++) {
+            if (courses[i] == null) {
+                full = false;
+            }
+        }
+        if (full) {
+            Course[] tempArray = new Course[courses.length * 2];
+            for (int i = 0; i < courses.length; i++) {
+                tempArray[i] = courses[i];
+            }
+            tempArray[courses.length] = course;
+            courses = tempArray;
+            return;
+        } else {
+            Course[] tempArray = new Course[courses.length];
+            for (int i = 0; i < courses.length; i++) {
+                tempArray[i] = courses[i];
+            }
+            int insertIndex = 0;
+            for (int i = 0; i < tempArray.length; i++) {
+                if (tempArray[i] == null) {
+                    insertIndex = i;
+                    break;
+                }
+            }
+            tempArray[insertIndex] = course;
+            courses = tempArray;
+        }
     }
 
     /**
@@ -81,16 +129,22 @@ public class Teacher implements Person {
      */
     public boolean dropCourse(Course course){
         //TODO: Remove course from the Teacher's array of courses, if possible.
+        for (int i = 0; i < courses.length; i++) {
+            if (courses[i] == course) {
+                courses[i] = null;
+                return true;
+            }
+        }
         return false;
     }
 
     /**
      * @return a reference to the array of courses taught by this Teacher.
      */
-    public Course[] getCourses()
-    {
+    public Course[] getCourses() {
         //TODO: Return a reference to the courses taught by the teacher
-        return null;
+        Course[] tempCourses = courses;
+        return tempCourses;
     }
 
     /**
@@ -100,59 +154,75 @@ public class Teacher implements Person {
      * @param course Course being confirmed if taught by teacher
      * @return Course object.
      */
-    public int teachesCourse(Course course)
-    {
+    public int teachesCourse(Course course) {
         //TODO: Return the number of times this Teacher teaches this course
-        return 0;
+        int courseCounter = 0;
+        for (int i = 0; i < courses.length; i++) {
+            if (courses[i] == course) {
+                courseCounter++;
+            }
+        }
+        return courseCounter;
     }
 
     @Override
     public void setName(String name) {
         //TODO: Set the Teacher's name to the parameter name
+        this.name = name;
     }
 
     @Override
     public void setGender(String gender) {
         //TODO: Set the Teacher's gender to the parameter gender
+        this.gender = gender;
     }
 
     @Override
     public void setAge(int age) {
         //TODO: Set the Teacher's age to the parameter age
+        this.age = age;
+    }
+
+    public void setBaseSalary(int baseSalary) {
+        this.baseSalary = baseSalary;
+    }
+
+    public void setPerCourseSalary(int perCourseSalary) {
+        this.perCourseSalary = perCourseSalary;
     }
 
     @Override
     public String getName() {
         //TODO: Return the Teacher's name
-        return null;
+        return name;
     }
 
     @Override
     public String getGender() {
         //TODO: Return the Teacher's gender
-        return null;
+        return gender;
     }
 
     @Override
     public int getAge() {
         //TODO: Return the Teacher's age
-        return 90;
+        return age;
     }
 
     @Override
     public int getID() {
         //TODO: Return the Teacher's ID
-        return 0;
+        return id;
     }
 
     public int getPerCourseSalary() {
         //TODO: Return the Teacher's salary received per course taught
-        return 0; //pretty much
+        return 15000; //pretty much
     }
 
     public int getBaseSalary() {
         //TODO: Return the Teacher's salary received for being employed by the College
-        return 0; //welp
+        return 30000; //welp
     }
 
     /**
