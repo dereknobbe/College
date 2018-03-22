@@ -50,6 +50,10 @@ public class College {
         //TODO: Initialize field variables for this College object
         this.name = name;
         this.tuition = tuition;
+        courses = new Course[MAX_COURSES];
+        teachers = new Teacher[MAX_TEACHERS];
+        professors = new Professor[MAX_PROFESSORS];
+        students = new Student[MAX_STUDENTS];
     }
 
     /**
@@ -64,17 +68,26 @@ public class College {
         if (course == null) {
             return;
         }
+        boolean full = true;
         for (int i = 0; i < courses.length; i++) {
-            if (course == courses[i]) {
-                return;
+            if (courses[i] == null) {
+                full = false;
             }
         }
-        if (courses[9] != null) {
+        if (full) {
             return;
+        }
+        for (int i = 0; i < courses.length; i++) {
+            if (courses[i] != null) {
+                if (courses[i].getName().equals(course.getName())) {
+                    return;
+                }
+            }
         }
         for (int i = 0; i < courses.length; i++) {
             if (courses[i] == null) {
                 lastCourseIndex = i;
+                break;
             }
         }
         courses[lastCourseIndex] = course;
@@ -92,8 +105,10 @@ public class College {
             return;
         }
         for (int i = 0; i < professors.length; i++) {
-            if (professor.getID() == professors[i].getID()) {
-                return;
+            if (professors[i] != null) {
+                if (professor.getID() == professors[i].getID()) {
+                    return;
+                }
             }
         }
         int lastProfIndex = 0;
@@ -118,13 +133,15 @@ public class College {
             return;
         }
         for (int i = 0; i < teachers.length; i++) {
-            if (teacher.getID() == teachers[i].getID()) {
-                return;
+            if (teachers[i] != null) {
+                if (teacher.getID() == teachers[i].getID()) {
+                    return;
+                }
             }
         }
         int lastTeacherIndex = 0;
         for (int i = 0; i < teachers.length; i++) {
-            if (students[i] == null) {
+            if (teachers[i] == null) {
                 lastTeacherIndex = i;
                 break;
             }
@@ -144,6 +161,9 @@ public class College {
             return;
         }
         for (int i = 0; i < students.length; i++) {
+            if (students[i] == null) {
+                continue;
+            }
             if (student.getID() == students[i].getID()) {
                 return;
             }
@@ -168,6 +188,27 @@ public class College {
      */
     public void dropStudent(Student student) {
         //TODO: Remove the given student from the students array and any courses, if appropriate
+        if (student == null) {
+            return;
+        }
+        boolean contains = false;
+        for (int i = 0; i < students.length ; i++) {
+            if (students[i] != null) {
+                if (students[i].getID() == student.getID()) {
+                    contains = true;
+                }
+            }
+        }
+        if (contains == false) {
+            return;
+        }
+        for (int i = 0; i < students.length; i++) {
+            if (students[i] != null) {
+                if (students[i].getID() == student.getID()) {
+                    students[i] = null;
+                }
+            }
+        }
     }
 
     /**
@@ -251,5 +292,14 @@ public class College {
     public int getTuition() {
         //TODO: Return the tuition of the College object
         return tuition; // I wish
+    }
+
+    public static void main(String[] args) {
+        College purdue = new College("purdue",15000);
+        Professor derek = new Professor("derek",23,"male");
+        Teacher andrea = new Teacher("andrea",24,"female");
+        Course spanish = new Course("spanish",derek);
+        purdue.addCourse(spanish);
+        purdue.addCourse(spanish);
     }
 }

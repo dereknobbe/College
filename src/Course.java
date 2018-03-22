@@ -19,7 +19,6 @@ public class Course {
     private Professor professor;
     private Teacher[] teachers;
     private Student[] students;
-
     /**
      * Constructs a Course object with the corresponding parameters as its name and a reference to the lead Professor.
      * Creates an array to contain at most 100 students enrolled in the course and ensures the Professor adds the course
@@ -34,6 +33,7 @@ public class Course {
         this.professor = professor;
         teachers = new Teacher[5];
         students = new Student[MAX_STUDENTS];
+        professor.addCourse(this);
     }
 
     /**
@@ -46,16 +46,20 @@ public class Course {
      */
     public void addStudent(Student student) throws AddToCourseException {
         //TODO: Add student to Course, if possible
-        if (student == null) {
-            throw new AddToCourseException("Cannot add students of name null");
+        boolean full = false;
+        if (getRoster().length > 99) {
+            full = true;
         }
-        else if (getRoster().length >= 100) {
-            throw new AddToCourseException("Course is full. Cannot add student.");
+        if (student == null) {
+            throw new AddToCourseException();
+        }
+        else if (full) {
+            throw new AddToCourseException();
         }
         else {
             for (int i = 0; i < getRoster().length; i++) {
-                if (getRoster()[i].getName() == student.getName()) {
-                    throw new AddToCourseException("This student is already in this course.");
+                if (getRoster()[i].getID() == student.getID()) {
+                    throw new AddToCourseException();
                 }
             }
         }
@@ -78,18 +82,32 @@ public class Course {
     public void dropStudent(Student student) throws DropFromCourseException{
         //TODO: Remove student from Course, if possible
         if (student == null) {
-            throw new DropFromCourseException("Cannot drop student of name 'null'");
+            throw new DropFromCourseException();
         }
+        int checkStudent = 0;
         for (int i = 0; i < students.length; i++) {
-            int checkStudent = 0;
-            if (students[i].getName() == student.getName()) {
+            if (students[i] == null) {
+                continue;
+            }
+            if (students[i].getID() == student.getID()) {
                 checkStudent++;
             }
-            if (checkStudent == 0) {
-                throw new DropFromCourseException("Student is not enrolled in the course");
-            }
         }
-
+        if (checkStudent == 0) {
+            throw new DropFromCourseException();
+        }
+        else {
+            int dropIndex = 0;
+            for (int i = 0; i < students.length; i++) {
+                if (students[i] == null) {
+                    continue;
+                }
+                if (students[i].getID() == student.getID()) {
+                    dropIndex = i;
+                }
+            }
+            students[dropIndex] = null;
+        }
     }
 
     /**
@@ -186,8 +204,20 @@ public class Course {
      */
     public Student[] getRoster() {
         //TODO: Create and return a new array containing references to each Student in this course's Student array
-        Student[] rosterList = new Student[students.length];
-        rosterList = students;
+        int numStudents = 0;
+        for (int i = 0; i < students.length; i++) {
+            if (students[i] != null) {
+                numStudents++;
+            }
+        }
+        Student[] rosterList = new Student[numStudents];
+        int rosterIndex = 0;
+        for (int i = 0; i < students.length; i++) {
+            if (students[i] != null) {
+                rosterList[rosterIndex] = students[i];
+                rosterIndex++;
+            }
+        }
         return rosterList;
     }
 
@@ -228,6 +258,7 @@ public class Course {
         //TODO: Change the Professor for this Course and add/remove the course from the respective Professor's arrays of courses
         this.professor.dropCourse(this);
         this.professor = professor;
+        this.professor.addCourse(this);
     }
 
     /**

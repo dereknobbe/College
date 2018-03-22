@@ -86,6 +86,7 @@ public class Teacher implements Person {
      */
     public void addCourse(Course course) {
         //TODO: Add course to the Teacher's array of courses, if possible
+        int arrayLength = courses.length;
         boolean full = true;
         if (course == null) {
             return;
@@ -101,8 +102,8 @@ public class Teacher implements Person {
                 tempArray[i] = courses[i];
             }
             tempArray[courses.length] = course;
+           // courses = new Course[courses.length * 2];
             courses = tempArray;
-            return;
         } else {
             Course[] tempArray = new Course[courses.length];
             for (int i = 0; i < courses.length; i++) {
@@ -217,12 +218,12 @@ public class Teacher implements Person {
 
     public int getPerCourseSalary() {
         //TODO: Return the Teacher's salary received per course taught
-        return 15000; //pretty much
+        return perCourseSalary; //pretty much
     }
 
     public int getBaseSalary() {
         //TODO: Return the Teacher's salary received for being employed by the College
-        return 30000; //welp
+        return baseSalary; //welp
     }
 
     /**
